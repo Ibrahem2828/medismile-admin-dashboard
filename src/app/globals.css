@@ -1,0 +1,483 @@
+@import "tailwindcss";
+
+/* =============================================================================
+   Phase 1 — Design Tokens
+   Brand primitives (hex source of truth) → Semantic tokens → Tailwind (@theme)
+   ============================================================================= */
+
+:root {
+  /* --- Brand primitives (MediSmile — do not change values) --- */
+  --brand-sky-50: #f0f9ff;
+  --brand-sky-100: #e0f2fe;
+  --brand-sky-200: #bae6fd;
+  --brand-sky-300: #7dd3fc;
+  --brand-sky-400: #38bdf8;
+  --brand-sky-500: #0ea5e9;
+  --brand-sky-600: #0284c7;
+  --brand-sky-700: #0369a1;
+  --brand-sky-800: #075985;
+  --brand-sky-900: #0c4a6e;
+
+  --brand-dark: #0f172a;
+  --brand-dark-light: #1e293b;
+  --brand-dark-lighter: #334155;
+
+  --brand-light: #ffffff;
+  --brand-light-gray: #f8fafc;
+
+  /* --- Support neutrals / status (not brand; single definition) --- */
+  --support-slate-200: #e2e8f0;
+  --support-slate-300: #cbd5e1;
+  --support-slate-400: #94a3b8;
+  --support-slate-500: #64748b;
+  --support-slate-600: #475569;
+  --support-success: #16a34a;
+  --support-success-bright: #22c55e;
+  --support-warning: #f59e0b;
+  --support-warning-bright: #fbbf24;
+  --support-danger: #dc2626;
+  --support-danger-bright: #f87171;
+
+  /* --- Semantic tokens (Light) --- */
+  --ds-primary: var(--brand-sky-600);
+  --ds-primary-hover: var(--brand-sky-700);
+  --ds-primary-muted: var(--brand-sky-50);
+  --ds-primary-foreground: var(--brand-light);
+
+  --ds-background: var(--brand-sky-50);
+  --ds-surface: var(--brand-light);
+  --ds-surface-elevated: var(--brand-light);
+
+  --ds-text: var(--brand-dark);
+  --ds-text-secondary: var(--support-slate-600);
+  --ds-muted: var(--support-slate-500);
+
+  --ds-border: var(--support-slate-200);
+  --ds-border-strong: var(--support-slate-300);
+  --ds-ring: var(--brand-sky-400);
+
+  --ds-success: var(--support-success);
+  --ds-warning: var(--support-warning);
+  --ds-danger: var(--support-danger);
+  --ds-info: var(--brand-sky-500);
+
+  /* Public semantic aliases (var(--color-*)) */
+  --color-primary: var(--ds-primary);
+  --color-primary-hover: var(--ds-primary-hover);
+  --color-primary-muted: var(--ds-primary-muted);
+  --color-primary-foreground: var(--ds-primary-foreground);
+  --color-background: var(--ds-background);
+  --color-surface: var(--ds-surface);
+  --color-surface-elevated: var(--ds-surface-elevated);
+  --color-text: var(--ds-text);
+  --color-text-secondary: var(--ds-text-secondary);
+  --color-muted: var(--ds-muted);
+  --color-border: var(--ds-border);
+  --color-border-strong: var(--ds-border-strong);
+  --color-ring: var(--ds-ring);
+  --color-success: var(--ds-success);
+  --color-warning: var(--ds-warning);
+  --color-danger: var(--ds-danger);
+  --color-info: var(--ds-info);
+
+  /* Orphan aliases used by Register (same look via brand/semantics) */
+  --color-blue: var(--ds-primary);
+  --color-accent: var(--ds-primary-hover);
+  --color-blue-light: var(--brand-sky-100);
+  --color-text-light: var(--brand-light);
+  --color-bg-dark: var(--ds-text);
+  --color-bg-lightest: var(--ds-surface);
+  --color-error: var(--ds-danger);
+
+  /* --- Phase 2 — Typography tokens (UI font: Tajawal via next/font) --- */
+  --font-ui: var(--font-tajawal), "Segoe UI", system-ui, -apple-system, sans-serif;
+
+  --type-display-size: 2.25rem; /* 36px */
+  --type-display-weight: 800;
+  --type-display-leading: 1.25;
+
+  --type-h1-size: 1.875rem; /* 30px */
+  --type-h1-weight: 700;
+  --type-h1-leading: 1.3;
+
+  --type-h2-size: 1.5rem; /* 24px */
+  --type-h2-weight: 700;
+  --type-h2-leading: 1.35;
+
+  --type-h3-size: 1.25rem; /* 20px */
+  --type-h3-weight: 600;
+  --type-h3-leading: 1.4;
+
+  --type-body-size: 1rem; /* 16px */
+  --type-body-weight: 400;
+  --type-body-leading: 1.6;
+
+  --type-body-sm-size: 0.875rem; /* 14px */
+  --type-body-sm-weight: 400;
+  --type-body-sm-leading: 1.5;
+
+  --type-caption-size: 0.75rem; /* 12px */
+  --type-caption-weight: 500;
+  --type-caption-leading: 1.4;
+
+  --type-label-size: 0.875rem; /* 14px */
+  --type-label-weight: 500;
+  --type-label-leading: 1.4;
+
+  /* --- Phase 3A — Radius & elevation tokens (minimal) --- */
+  --ds-radius-sm: 0.375rem; /* 6px — chips, tight controls */
+  --ds-radius-md: 0.5rem; /* 8px — buttons, inputs */
+  --ds-radius-lg: 0.75rem; /* 12px — cards, dropdowns */
+  --ds-radius-xl: 1rem; /* 16px — modals, large panels */
+
+  --ds-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --ds-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --ds-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --ds-shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+}
+
+/* Semantic rebinding for Dark — mechanism stays html.dark / Redux */
+html.dark {
+  color-scheme: dark;
+
+  --ds-primary: var(--brand-sky-500);
+  --ds-primary-hover: var(--brand-sky-400);
+  --ds-primary-muted: var(--brand-sky-900);
+  --ds-primary-foreground: var(--brand-light);
+
+  --ds-background: var(--brand-dark);
+  --ds-surface: var(--brand-dark-light);
+  --ds-surface-elevated: var(--brand-dark-lighter);
+
+  --ds-text: var(--brand-sky-100);
+  --ds-text-secondary: var(--support-slate-300);
+  --ds-muted: var(--support-slate-400);
+
+  --ds-border: var(--brand-dark-lighter);
+  --ds-border-strong: var(--support-slate-600);
+  --ds-ring: var(--brand-sky-400);
+
+  --ds-success: var(--support-success-bright);
+  --ds-warning: var(--support-warning-bright);
+  --ds-danger: var(--support-danger-bright);
+  --ds-info: var(--brand-sky-400);
+}
+
+/* Tailwind v4 theme bridge: utilities → CSS variables (no hex / no duplicate type values) */
+@theme inline {
+  --font-sans: var(--font-ui);
+
+  /* Role-based type scale → text-display, text-h1, … */
+  --text-display: var(--type-display-size);
+  --text-display--line-height: var(--type-display-leading);
+  --text-display--font-weight: var(--type-display-weight);
+
+  --text-h1: var(--type-h1-size);
+  --text-h1--line-height: var(--type-h1-leading);
+  --text-h1--font-weight: var(--type-h1-weight);
+
+  --text-h2: var(--type-h2-size);
+  --text-h2--line-height: var(--type-h2-leading);
+  --text-h2--font-weight: var(--type-h2-weight);
+
+  --text-h3: var(--type-h3-size);
+  --text-h3--line-height: var(--type-h3-leading);
+  --text-h3--font-weight: var(--type-h3-weight);
+
+  --text-body: var(--type-body-size);
+  --text-body--line-height: var(--type-body-leading);
+  --text-body--font-weight: var(--type-body-weight);
+
+  --text-body-sm: var(--type-body-sm-size);
+  --text-body-sm--line-height: var(--type-body-sm-leading);
+  --text-body-sm--font-weight: var(--type-body-sm-weight);
+
+  --text-caption: var(--type-caption-size);
+  --text-caption--line-height: var(--type-caption-leading);
+  --text-caption--font-weight: var(--type-caption-weight);
+
+  --text-label: var(--type-label-size);
+  --text-label--line-height: var(--type-label-leading);
+  --text-label--font-weight: var(--type-label-weight);
+
+  --color-sky-50: var(--brand-sky-50);
+  --color-sky-100: var(--brand-sky-100);
+  --color-sky-200: var(--brand-sky-200);
+  --color-sky-300: var(--brand-sky-300);
+  --color-sky-400: var(--brand-sky-400);
+  --color-sky-500: var(--brand-sky-500);
+  --color-sky-600: var(--brand-sky-600);
+  --color-sky-700: var(--brand-sky-700);
+  --color-sky-800: var(--brand-sky-800);
+  --color-sky-900: var(--brand-sky-900);
+
+  --color-dark: var(--brand-dark);
+  --color-dark-light: var(--brand-dark-light);
+  --color-dark-lighter: var(--brand-dark-lighter);
+
+  --color-light: var(--brand-light);
+  --color-light-gray: var(--brand-light-gray);
+
+  --color-primary: var(--ds-primary);
+  --color-primary-hover: var(--ds-primary-hover);
+  --color-primary-muted: var(--ds-primary-muted);
+  --color-primary-foreground: var(--ds-primary-foreground);
+
+  --color-background: var(--ds-background);
+  --color-surface: var(--ds-surface);
+  --color-surface-elevated: var(--ds-surface-elevated);
+
+  --color-text: var(--ds-text);
+  --color-text-secondary: var(--ds-text-secondary);
+  --color-muted: var(--ds-muted);
+
+  --color-border: var(--ds-border);
+  --color-border-strong: var(--ds-border-strong);
+  --color-ring: var(--ds-ring);
+
+  --color-success: var(--ds-success);
+  --color-warning: var(--ds-warning);
+  --color-danger: var(--ds-danger);
+  --color-info: var(--ds-info);
+
+  --radius-sm: var(--ds-radius-sm);
+  --radius-md: var(--ds-radius-md);
+  --radius-lg: var(--ds-radius-lg);
+  --radius-xl: var(--ds-radius-xl);
+
+  --shadow-sm: var(--ds-shadow-sm);
+  --shadow-md: var(--ds-shadow-md);
+  --shadow-lg: var(--ds-shadow-lg);
+  --shadow-xl: var(--ds-shadow-xl);
+}
+
+/* ⚙️ أساسيات التصميم - منظمة باستخدام Tailwind */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@layer base {
+  body {
+    @apply m-0 min-h-screen font-sans;
+    font-family: var(--font-ui);
+    font-size: var(--type-body-size);
+    font-weight: var(--type-body-weight);
+    line-height: var(--type-body-leading);
+    background-color: var(--ds-background);
+    color: var(--ds-text);
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  /* Base heading defaults — utilities on components still override (@layer base) */
+  h1 {
+    font-size: var(--type-h1-size);
+    font-weight: var(--type-h1-weight);
+    line-height: var(--type-h1-leading);
+  }
+
+  h2 {
+    font-size: var(--type-h2-size);
+    font-weight: var(--type-h2-weight);
+    line-height: var(--type-h2-leading);
+  }
+
+  h3 {
+    font-size: var(--type-h3-size);
+    font-weight: var(--type-h3-weight);
+    line-height: var(--type-h3-leading);
+  }
+}
+
+@layer base {
+  html.dark body {
+    background-color: var(--ds-background);
+    color: var(--ds-text);
+  }
+}
+
+/* جميع العناوين في الوضع الليلي تكون بيضاء */
+@layer base {
+  html.dark h1,
+  html.dark h2,
+  html.dark h3,
+  html.dark h4,
+  html.dark h5,
+  html.dark h6 {
+    @apply text-white;
+  }
+}
+
+/*
+ * Shell dark mode — rely on semantic tokens.
+ * Soft fallback only: kill legacy gradients, no color !important.
+ */
+@layer components {
+  html.dark .sidebar-main,
+  html.dark .sidebar-mobile-menu,
+  html.dark .sidebar-mobile-header,
+  html.dark .navbar-main,
+  html.dark .navbar-mobile,
+  html.dark .navbar-drawer {
+    background-image: none;
+  }
+
+  /* Sidebar nav scrollbar — quiet, token-based */
+  .sidebar-nav {
+    scrollbar-width: thin;
+    scrollbar-color: var(--ds-border) transparent;
+  }
+
+  .sidebar-nav::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .sidebar-nav::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .sidebar-nav::-webkit-scrollbar-thumb {
+    background: var(--ds-border);
+    border-radius: var(--ds-radius-sm);
+  }
+
+  .sidebar-nav::-webkit-scrollbar-thumb:hover {
+    background: var(--ds-border-strong);
+  }
+}
+
+/* Smooth transitions for theme switching */
+@media (prefers-reduced-motion: no-preference) {
+  *,
+  *::before,
+  *::after {
+    transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+}
+
+/* Scrollbar Styling - Light Mode */
+@layer base {
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--brand-sky-50);
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--brand-sky-300);
+    border-radius: 4px;
+    transition: background 0.2s ease;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--brand-sky-400);
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--brand-sky-300) var(--brand-sky-50);
+  }
+}
+
+/* Scrollbar Styling - Dark Mode */
+@layer base {
+  html.dark ::-webkit-scrollbar-track {
+    background: var(--brand-dark-light);
+    border-radius: 4px;
+  }
+
+  html.dark ::-webkit-scrollbar-thumb {
+    background: var(--support-slate-600);
+    border-radius: 4px;
+  }
+
+  html.dark ::-webkit-scrollbar-thumb:hover {
+    background: var(--support-slate-500);
+  }
+
+  html.dark * {
+    scrollbar-color: var(--support-slate-600) var(--brand-dark-light);
+  }
+}
+
+/* Text Selection Colors */
+@layer base {
+  ::selection {
+    background-color: var(--brand-sky-300);
+    color: var(--brand-sky-900);
+  }
+
+  ::-moz-selection {
+    background-color: var(--brand-sky-300);
+    color: var(--brand-sky-900);
+  }
+}
+
+@layer base {
+  html.dark ::selection {
+    background-color: var(--brand-sky-500);
+    color: var(--brand-light);
+  }
+
+  html.dark ::-moz-selection {
+    background-color: var(--brand-sky-500);
+    color: var(--brand-light);
+  }
+}
+
+/* Form Elements - Dark Mode Enhancements */
+@layer base {
+  html.dark select {
+    background-color: var(--brand-dark-light);
+    color: var(--brand-sky-100);
+    border-color: var(--brand-dark-lighter);
+  }
+
+  html.dark select:focus {
+    border-color: var(--brand-sky-400);
+    outline: none;
+  }
+
+  html.dark textarea {
+    background-color: var(--brand-dark-light);
+    color: var(--brand-sky-100);
+    border-color: var(--brand-dark-lighter);
+  }
+
+  html.dark textarea:focus {
+    border-color: var(--brand-sky-400);
+    outline: none;
+  }
+
+  html.dark textarea::placeholder {
+    color: var(--support-slate-500);
+  }
+
+  html.dark input[type="checkbox"],
+  html.dark input[type="radio"] {
+    accent-color: var(--brand-sky-500);
+  }
+
+  html.dark input[type="file"] {
+    color: var(--brand-sky-100);
+  }
+
+  html.dark input[type="file"]::file-selector-button {
+    background-color: var(--brand-dark-light);
+    color: var(--brand-sky-100);
+    border-color: var(--brand-dark-lighter);
+  }
+
+  html.dark input[type="file"]::file-selector-button:hover {
+    background-color: var(--brand-dark-lighter);
+  }
+}

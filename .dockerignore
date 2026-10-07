@@ -1,0 +1,36 @@
+# Git / IDE
+.git
+.gitignore
+.gitattributes
+.vscode
+.idea
+*.md
+!DEPLOY.md
+
+# Dependencies & build artifacts
+node_modules
+.next
+out
+build
+coverage
+.turbo
+
+# Env & secrets (pass via compose / CI build-args)
+.env
+.env.*
+!.env.example
+
+# Local / OS noise
+.DS_Store
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+*.pem
+.vercel
+
+# Tests / tooling not needed in the image
+eslint.config.*
+**/__tests__
+**/*.test.*
+**/*.spec.*
